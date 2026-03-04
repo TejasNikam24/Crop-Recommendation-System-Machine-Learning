@@ -3,64 +3,66 @@ import numpy as np
 import pickle
 
 # ----------------------------
-# Load Model
+# Load Model Files
 # ----------------------------
 model = pickle.load(open("model_gbc.pkl", "rb"))
 scaler = pickle.load(open("scaler.pkl", "rb"))
 encoder = pickle.load(open("encoder.pkl", "rb"))
 
-st.set_page_config(page_title="AgriAI Dashboard", layout="wide")
+st.set_page_config(page_title="AgriAI Crop Prediction", layout="wide")
 
 # ----------------------------
-# Custom CSS – SaaS Dark Theme
+# Background + Glass UI Styling
 # ----------------------------
 st.markdown("""
 <style>
 
 .stApp {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(rgba(10,20,15,0.85), rgba(10,20,15,0.85)),
+                url("https://images.unsplash.com/photo-1500382017468-9049fed747ef");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: white;
 }
 
-section[data-testid="stSidebar"] {
-    background: #0c1b1f;
-    border-right: 1px solid rgba(0,255,150,0.2);
-}
-
-.navbar {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    margin-bottom: 20px;
-}
-
-.card {
-    background: rgba(255,255,255,0.07);
-    padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(12px);
+/* Center container */
+.main-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 50px;
     border: 1px solid rgba(0,255,150,0.2);
-    box-shadow: 0 0 20px rgba(0,255,150,0.05);
+    box-shadow: 0 0 30px rgba(0,255,150,0.1);
 }
 
-.metric-title {
-    font-size: 14px;
+/* Title */
+.title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 700;
     color: #00ffa3;
 }
 
-.metric-value {
-    font-size: 26px;
-    font-weight: bold;
+/* Subtitle */
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #cccccc;
 }
 
+/* Button */
 .stButton>button {
     background: linear-gradient(90deg, #00ffa3, #00c97b);
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
     color: black;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 12px 30px;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 .stButton>button:hover {
@@ -71,91 +73,51 @@ section[data-testid="stSidebar"] {
 """, unsafe_allow_html=True)
 
 # ----------------------------
-# Sidebar Navigation
+# Header
 # ----------------------------
-st.sidebar.title("🌱 AgriAI")
-page = st.sidebar.radio("Navigation", ["Dashboard", "Prediction", "Analytics", "About"])
+st.markdown("<div class='title'>🌾 AgriAI Crop Recommendation</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>AI-Powered Smart Farming & Sustainable Agriculture</div>", unsafe_allow_html=True)
 
 # ----------------------------
-# Top Navbar
+# Main Glass Card
 # ----------------------------
-st.markdown('<div class="navbar">🤖 AI Powered Smart Farming Dashboard | 👤 Admin</div>', unsafe_allow_html=True)
+st.markdown("<div class='main-card'>", unsafe_allow_html=True)
 
-# =====================================================
-# DASHBOARD PAGE
-# =====================================================
-if page == "Dashboard":
+col1, col2, col3 = st.columns(3)
 
-    col1, col2, col3 = st.columns(3)
+with col1:
+    n = st.number_input("Nitrogen (N)", 0.0, 150.0, 90.0)
+    p = st.number_input("Phosphorus (P)", 0.0, 150.0, 40.0)
+    k = st.number_input("Potassium (K)", 0.0, 150.0, 40.0)
 
-    with col1:
-        st.markdown('<div class="card"><div class="metric-title">Soil Health</div><div class="metric-value">87%</div></div>', unsafe_allow_html=True)
+with col2:
+    temp = st.number_input("Temperature (°C)", 0.0, 50.0, 25.0)
+    hum = st.number_input("Humidity (%)", 0.0, 100.0, 80.0)
 
-    with col2:
-        st.markdown('<div class="card"><div class="metric-title">Weather Stability</div><div class="metric-value">72%</div></div>', unsafe_allow_html=True)
+with col3:
+    ph = st.number_input("pH Value", 0.0, 14.0, 6.5)
+    rain = st.number_input("Rainfall (mm)", 0.0, 500.0, 100.0)
 
-    with col3:
-        st.markdown('<div class="card"><div class="metric-title">Crop Suitability Score</div><div class="metric-value">AI Ready</div></div>', unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.image("https://images.unsplash.com/photo-1500382017468-9049fed747ef", use_column_width=True)
+# ----------------------------
+# Prediction
+# ----------------------------
+if st.button("🚀 Run AI Prediction"):
 
-# =====================================================
-# PREDICTION PAGE
-# =====================================================
-elif page == "Prediction":
+    input_data = np.array([[n, p, k, temp, hum, ph, rain]])
+    scaled_input = scaler.transform(input_data)
+    prediction = model.predict(scaled_input)
+    probabilities = model.predict_proba(scaled_input)
 
-    st.subheader("🔬 AI Crop Prediction Engine")
+    crop_name = encoder.inverse_transform(prediction)[0]
+    confidence = round(np.max(probabilities) * 100, 2)
 
-    col1, col2, col3 = st.columns(3)
+    st.markdown(f"""
+    <div style="text-align:center; margin-top:30px;">
+        <h2 style="color:#00ffa3;">🌱 Recommended Crop: {crop_name}</h2>
+        <p style="font-size:18px;">Suitability Score: {confidence}%</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with col1:
-        n = st.number_input("Nitrogen", 0.0, 150.0, 90.0)
-        p = st.number_input("Phosphorus", 0.0, 150.0, 40.0)
-        k = st.number_input("Potassium", 0.0, 150.0, 40.0)
-
-    with col2:
-        temp = st.number_input("Temperature (°C)", 0.0, 50.0, 25.0)
-        hum = st.number_input("Humidity (%)", 0.0, 100.0, 80.0)
-
-    with col3:
-        ph = st.number_input("pH Value", 0.0, 14.0, 6.5)
-        rain = st.number_input("Rainfall (mm)", 0.0, 500.0, 100.0)
-
-    if st.button("Run AI Prediction 🚀"):
-
-        input_data = np.array([[n, p, k, temp, hum, ph, rain]])
-        scaled_input = scaler.transform(input_data)
-        prediction = model.predict(scaled_input)
-        probabilities = model.predict_proba(scaled_input)
-
-        crop_name = encoder.inverse_transform(prediction)[0]
-        confidence = round(np.max(probabilities) * 100, 2)
-
-        st.markdown("### 🌾 Recommended Crop")
-        st.markdown(f"<div class='card'><h2 style='color:#00ffa3'>{crop_name}</h2><p>Suitability Score: {confidence}%</p></div>", unsafe_allow_html=True)
-
-        st.image("https://source.unsplash.com/600x300/?"+crop_name+",farm", use_column_width=True)
-
-# =====================================================
-# ANALYTICS PAGE
-# =====================================================
-elif page == "Analytics":
-
-    st.subheader("📊 Agricultural Insights")
-
-    st.markdown('<div class="card">AI analyzes soil composition, rainfall trends, and climate patterns to optimize crop yield and sustainability.</div>', unsafe_allow_html=True)
-
-# =====================================================
-# ABOUT PAGE
-# =====================================================
-elif page == "About":
-
-    st.subheader("🌍 About AgriAI")
-    st.markdown("""
-    AgriAI is a next-generation AI-powered Crop Recommendation System designed 
-    for precision agriculture and sustainable farming. 
-    
-    Built using Machine Learning and predictive analytics to help farmers 
-    maximize productivity and reduce environmental impact.
-    """)
+st.markdown("</div>", unsafe_allow_html=True)
