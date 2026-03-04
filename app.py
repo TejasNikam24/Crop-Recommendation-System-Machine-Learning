@@ -7,14 +7,11 @@ import pickle
 #scaler = pickle.load(open("scaler.pkl", 'rb'))  # Ensure this file exists
 #model_gbc = pickle.load(open("model_gbc.pkl", 'rb'))
 
-import os
+# inference (prediction on new data)
 
-BASE_DIR = os.path.dirname(__file__)
-
-encoder = pickle.load(open(os.path.join(BASE_DIR, "encoder.pkl"), 'rb'))
-scaler = pickle.load(open(os.path.join(BASE_DIR, "scaler.pkl"), 'rb'))
-model_gbc = pickle.load(open(os.path.join(BASE_DIR, "model_gbc.pkl"), 'rb'))
-
+encoder=pickle.load(open("encoder.pkl", 'rb'))
+model_gbc=pickle.load(open("model_gbc.pkl",'rb'))
+scaler=pickle.load(open("scaler.pkl",'rb'))
 
 
 
@@ -50,4 +47,5 @@ if st.button('🌱 Recommend'):
     crop = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
 
     st.success(f"✅ Recommended Crop: **{crop}**")
+
 
