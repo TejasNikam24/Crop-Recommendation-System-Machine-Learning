@@ -3,9 +3,9 @@ import pandas as pd
 import pickle
 
 # Load encoder, scaler, and model
-encoder = pickle.load(open("models/encoder.pkl", 'rb'))
-scaler = pickle.load(open("models/scaler.pkl", 'rb'))  # Ensure this file exists
-model_gbc = pickle.load(open("models/model_gbc.pkl", 'rb'))
+encoder = pickle.load(open("encoder.pkl", 'rb'))
+scaler = pickle.load(open("scaler.pkl", 'rb'))  # Ensure this file exists
+model_gbc = pickle.load(open("model_gbc.pkl", 'rb'))
 
 # Prediction function
 def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
@@ -37,4 +37,5 @@ with col2:
 # Predict button
 if st.button('🌱 Recommend'):
     crop = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
+
     st.success(f"✅ Recommended Crop: **{crop}**")
