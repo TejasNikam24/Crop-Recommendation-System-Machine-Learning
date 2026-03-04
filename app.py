@@ -80,7 +80,7 @@ st.markdown("<div class='sub-title'>AI-Powered Smart Farming & Sustainable Agric
 # ----------------------------
 # Prediction Card
 # ----------------------------
-st.markdown("<div class='main-card'>", unsafe_allow_html=True)
+#st.markdown("<div class='main-card'>", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
@@ -120,5 +120,6 @@ if st.button("🚀 Run AI Prediction"):
     """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
