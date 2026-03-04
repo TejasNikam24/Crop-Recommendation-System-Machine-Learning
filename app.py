@@ -12,13 +12,13 @@ encoder = pickle.load(open("encoder.pkl", "rb"))
 st.set_page_config(page_title="AgriAI Crop Prediction", layout="wide")
 
 # ----------------------------
-# Background + Glass UI Styling
+# Background + Styling
 # ----------------------------
 st.markdown("""
 <style>
 
 .stApp {
-    background: linear-gradient(rgba(10,20,15,0.85), rgba(10,20,15,0.85)),
+    background: linear-gradient(rgba(10,20,15,0.65), rgba(10,20,15,0.65)),
                 url("https://images.unsplash.com/photo-1500382017468-9049fed747ef");
     background-size: cover;
     background-position: center;
@@ -26,31 +26,39 @@ st.markdown("""
     color: white;
 }
 
-/* Center container */
-.main-card {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 40px;
-    margin-top: 50px;
-    border: 1px solid rgba(0,255,150,0.2);
-    box-shadow: 0 0 30px rgba(0,255,150,0.1);
+/* Modern Header Box */
+.header-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 25px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(0,255,150,0.25);
+    box-shadow: 0 0 25px rgba(0,255,150,0.08);
+    text-align: center;
 }
 
-/* Title */
-.title {
-    text-align: center;
-    font-size: 42px;
+.header-title {
+    font-size: 38px;
     font-weight: 700;
     color: #00ffa3;
 }
 
-/* Subtitle */
-.subtitle {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 40px;
-    color: #cccccc;
+.header-subtitle {
+    font-size: 16px;
+    color: #dddddd;
+    margin-top: 8px;
+}
+
+/* Main Glass Card */
+.main-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(0,255,150,0.2);
+    box-shadow: 0 0 30px rgba(0,255,150,0.08);
 }
 
 /* Button */
@@ -73,13 +81,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----------------------------
-# Header
+# Modern Header Box
 # ----------------------------
-st.markdown("<div class='title'>🌾 AgriAI Crop Recommendation</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>AI-Powered Smart Farming & Sustainable Agriculture</div>", unsafe_allow_html=True)
+st.markdown("""
+<div class="header-box">
+    <div class="header-title">🌾 AgriAI Crop Recommendation</div>
+    <div class="header-subtitle">
+        AI-Powered Smart Farming & Sustainable Agriculture Platform
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ----------------------------
-# Main Glass Card
+# Prediction Card
 # ----------------------------
 st.markdown("<div class='main-card'>", unsafe_allow_html=True)
 
@@ -101,7 +115,7 @@ with col3:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ----------------------------
-# Prediction
+# Prediction Logic
 # ----------------------------
 if st.button("🚀 Run AI Prediction"):
 
