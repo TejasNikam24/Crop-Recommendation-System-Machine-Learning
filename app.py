@@ -26,29 +26,20 @@ st.markdown("""
     color: white;
 }
 
-/* Modern Header Box */
-.header-box {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
-    border-radius: 18px;
-    padding: 25px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border: 1px solid rgba(0,255,150,0.25);
-    box-shadow: 0 0 25px rgba(0,255,150,0.08);
+/* Clean Title */
+.main-title {
     text-align: center;
-}
-
-.header-title {
-    font-size: 38px;
+    font-size: 40px;
     font-weight: 700;
     color: #00ffa3;
+    margin-top: 40px;
 }
 
-.header-subtitle {
+.sub-title {
+    text-align: center;
     font-size: 16px;
     color: #dddddd;
-    margin-top: 8px;
+    margin-bottom: 40px;
 }
 
 /* Main Glass Card */
@@ -81,16 +72,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----------------------------
-# Modern Header Box
+# Clean Header (No Box)
 # ----------------------------
-st.markdown("""
-<div class="header-box">
-    <div class="header-title">🌾 AgriAI Crop Recommendation</div>
-    <div class="header-subtitle">
-        AI-Powered Smart Farming & Sustainable Agriculture Platform
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>🌾 AgriAI Crop Recommendation</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-title'>AI-Powered Smart Farming & Sustainable Agriculture Platform</div>", unsafe_allow_html=True)
 
 # ----------------------------
 # Prediction Card
