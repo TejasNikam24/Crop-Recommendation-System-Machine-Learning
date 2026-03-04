@@ -4,7 +4,7 @@ import pickle
 
 # Load Model Files
 model = pickle.load(open("model_gbc.pkl", "rb"))
-scaler = pickle.load(open("scaler (1).pkl", "rb"))
+scaler = pickle.load(open("scaler.pkl", "rb"))
 encoder = pickle.load(open("encoder.pkl", "rb"))
 
 # Page Config
@@ -32,3 +32,4 @@ if st.button("Recommend Crop"):
     crop_name = encoder.inverse_transform(prediction)
 
     st.success(f"🌿 Recommended Crop: {crop_name[0]}")
+
